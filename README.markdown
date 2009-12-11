@@ -14,19 +14,19 @@ Ensure that [gemcutter](http://gemcutter.org) is in your gem sources list, then:
 A bog-standard rails application's `config/database.yml` file looks like this:
 
     development:
-      adapter: oracle-enhanced
+      adapter: oracle_enhanced
       database: //localhost/XE
       username: cfg_animal
       password: not-important
 
     test:
-      adapter: oracle-enhanced
+      adapter: oracle_enhanced
       database: //localhost/XE
       username: cfg_animal_test
       password: who-cares
 
     production:
-      adapter: oracle-enhanced
+      adapter: oracle_enhanced
       database: //super/prod
       username: cfg_animal
       password: very-secret
@@ -39,13 +39,13 @@ Rails allows this file to contain [ERB][].  `bcdatabase` uses ERB to replace an 
     %>
 
     development:
-      adapter: oracle-enhanced
+      adapter: oracle_enhanced
       database: //localhost/XE
       username: cfg_animal
       password: not-important
 
     test:
-      adapter: oracle-enhanced
+      adapter: oracle_enhanced
       database: //localhost/XE
       username: cfg_animal_test
       password: who-cares
@@ -83,7 +83,7 @@ Since each file can define a set of default properties which are shared by all t
 If you have an `/etc/nubic/db/stage.yml` file that looks like this:
 
     defaults:
-      adapter: oracle-enhanced
+      adapter: oracle_enhanced
       database: //mondo/stage
     cfg_animal:
       password: secret
@@ -93,14 +93,14 @@ If you have an `/etc/nubic/db/stage.yml` file that looks like this:
 
 You have defined two configuration entries.  `:stage, :cfg_animal`:
 
-    adapter:  oracle-enhanced
+    adapter:  oracle_enhanced
     username: cfg_animal
     password: secret
     database: //mondo/stage
 
 and `:bcstage, :personnel`:
 
-    adapter:  oracle-enhanced
+    adapter:  oracle_enhanced
     username: pers
     password: more-secret
     database: //mondo/stage
