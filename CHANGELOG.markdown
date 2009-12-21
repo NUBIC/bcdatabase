@@ -1,3 +1,7 @@
+1.0.1
+=====
+- Update some old syntax for ruby 1.9 compatibility (David Yip)
+
 1.0.0
 =====
 - Split out from NUBIC internal `bcdatabase` project.

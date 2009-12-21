@@ -197,4 +197,68 @@ describe Bcdatabase do
       end
     end
   end
+
+  describe "for database.yml" do
+    before do
+      temporary_yaml "scran", {
+        "jim" => {
+          "username" => "james",
+          "password" => "earldom"
+        },
+
+        "dwide" => {
+          "username" => "dwight",
+          "password" => "help"
+        }
+      }
+      @bcdb = Bcdatabase.load
+    end
+
+    describe "the yaml for a valid reference" do
+      before do
+        @yaml = @bcdb.development(:scran, :jim)
+        @actual = YAML.load(@yaml)
+      end
+
+      it "isn't a separated YAML doc" do
+        @yaml.should_not =~ /---/
+      end
+
+      it "has a single top-level key" do
+        @actual.keys.should have(1).key
+        @actual.should have_key("development")
+      end
+
+      it "reflects the selected configuration" do
+        @actual['development']['username'].should == 'james'
+        @actual['development']['password'].should == 'earldom'
+      end
+    end
+
+    describe "an invalid reference" do
+      before do
+        ::RAILS_ENV = "staging"
+      end
+
+      after do
+        Object.class_eval { remove_const "RAILS_ENV" }
+      end
+
+      describe "for the current RAILS_ENV" do
+        it "allows the exception through" do
+          lambda { @bcdb.staging(:scran, :phil) }.should raise_error
+        end
+      end
+
+      describe "for a different RAILS_ENV" do
+        it "does not throw an exception" do
+          lambda { @bcdb.production(:scran, :phil) }.should_not raise_error
+        end
+
+        it "includes the error in the resulting hash" do
+          @bcdb.production(:scran, :phil).should =~ / error: No database entry for \"phil\" in scran/
+        end
+      end
+    end
+  end
 end
