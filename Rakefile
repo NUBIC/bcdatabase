@@ -11,8 +11,8 @@ begin
     gem.homepage = "http://github.com/rsutphin/bcdatabase"
     gem.authors = ["Rhett Sutphin"]
     gem.add_development_dependency 'rspec', ">= 1.2"
-    gem.add_dependency 'highline', '>= 1.4'
-    gem.add_dependency 'activesupport', '>= 2.0'
+    gem.add_dependency 'highline', '~> 1.6'
+    gem.add_dependency 'activesupport', '~> 2.0'
   end
   Jeweler::GemcutterTasks.new
 rescue LoadError

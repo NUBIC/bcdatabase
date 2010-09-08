@@ -1,3 +1,8 @@
+1.0.2
+=====
+- Tighten up gemspec gem deps.  Bcdatabase does not currently work
+  with ActiveSupport 3.
+
 1.0.1
 =====
 - Update some old syntax for ruby 1.9 compatibility (David Yip)
@@ -9,7 +14,7 @@
 
 0.4.1
 =====
-- Fix `bcdatabase encrypt` so that it doesn't re-encrypt already encrypted 
+- Fix `bcdatabase encrypt` so that it doesn't re-encrypt already encrypted
   epassword entries.
 
 0.4.0
