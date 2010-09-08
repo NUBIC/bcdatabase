@@ -94,7 +94,7 @@ module Bcdatabase
     private
 
     def create_entry(groupname, dbname)
-      group = @map[groupname] or raise Error.new("No databasease configuration group named #{groupname.inspect} found.  (Found #{@map.keys.inspect}.)")
+      group = @map[groupname] or raise Error.new("No database configuration group named #{groupname.inspect} found.  (Found #{@map.keys.inspect}.)")
       db = group[dbname] or raise Error.new("No database entry for #{dbname.inspect} in #{groupname}")
       merged = { 'username' => dbname, 'database' => dbname } \
         .merge(group['defaults'] || {}) \
