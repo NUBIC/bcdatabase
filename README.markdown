@@ -5,8 +5,6 @@ bcdatabase
 
 ## Installing bcdatabase
 
-Ensure that [gemcutter](http://gemcutter.org) is in your gem sources list, then:
-
     $ gem install bcdatabase
 
 ## Using bcdatabase to configure the database for a Rails application
