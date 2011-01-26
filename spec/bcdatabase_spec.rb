@@ -1,10 +1,6 @@
 require File.expand_path("spec_helper", File.dirname(__FILE__))
 
 describe Bcdatabase do
-  it "should have a d.d.d version" do
-    Bcdatabase::VERSION.should =~ /^\d+\.\d+\.\d+$/
-  end
-
   before(:each) do
     ENV["BCDATABASE_PATH"] = "/tmp/bcdb_specs"
     FileUtils.mkdir_p ENV["BCDATABASE_PATH"]
