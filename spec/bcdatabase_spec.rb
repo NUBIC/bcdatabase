@@ -225,8 +225,7 @@ describe Bcdatabase do
       end
 
       it "has a single top-level key" do
-        @actual.keys.should have(1).key
-        @actual.should have_key("development")
+        @actual.keys.should == ["development"]
       end
 
       it "reflects the selected configuration" do
