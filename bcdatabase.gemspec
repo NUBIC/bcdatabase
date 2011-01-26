@@ -12,7 +12,7 @@ Gem::Specification.new do |s|
   s.homepage = "http://github.com/rsutphin/bcdatabase"
   s.authors = ["Rhett Sutphin"]
 
-  s.require_path = "lib"
+  s.require_paths = ["lib"]
 
   s.executables = ['bcdatabase']
   s.files = Dir.glob("{CHANGELOG.markdown,LICENSE,README.markdown,{bin,lib}/**/*}")
