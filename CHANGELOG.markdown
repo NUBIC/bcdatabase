@@ -1,3 +1,7 @@
+1.0.3
+=====
+- Support ActiveSupport 3.  ActiveSupport 2 continues to work.
+
 1.0.2
 =====
 - Tighten up gemspec gem deps.  Bcdatabase does not currently work
