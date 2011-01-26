@@ -1,10 +1,8 @@
-require 'rake/gempackagetask'
+require 'bundler'
+Bundler::GemHelper.install_tasks
+
 require 'rake/rdoctask'
 require 'spec/rake/spectask'
-
-gemspec = eval(File.read('bcdatabase.gemspec'), binding, 'bcdatabase.gemspec')
-
-Rake::GemPackageTask.new(gemspec).define
 
 Rake::RDocTask.new do |rdoc|
   version = Bcdatabase::VERSION
