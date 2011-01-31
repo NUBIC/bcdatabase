@@ -109,4 +109,4 @@ module Bcdatabase
   end
 
   class Error < Exception; end
-end unless defined?(Bcdatabase)
+end
