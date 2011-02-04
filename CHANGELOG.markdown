@@ -1,3 +1,6 @@
+1.0.4
+=====
+
 1.0.3
 =====
 - Support ActiveSupport 3.  ActiveSupport 2 continues to work.
