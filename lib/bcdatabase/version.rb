@@ -1,3 +1,3 @@
 module Bcdatabase
-  VERSION = '1.0.3.pre'
+  VERSION = '1.0.3'
 end
