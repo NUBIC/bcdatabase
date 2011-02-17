@@ -12,7 +12,8 @@ end
 
 namespace :ci do
   task :rvmrc do
-    puts "#{PLATFORMS[ci_env]}@bcdatabase"
+    gemset = ENV['ACTIVESUPPORT_VERSION'] ? "bcdatabase-#{ENV['ACTIVESUPPORT_VERSION']}" : 'bcdatabase'
+    puts "#{PLATFORMS[ci_env]}@#{gemset}"
   end
 
   task :ensure_bundler_available do
