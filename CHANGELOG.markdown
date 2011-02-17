@@ -1,3 +1,6 @@
+1.0.5
+=====
+
 1.0.4
 =====
 - Fix command line utilities that were broken in 1.0.3 due to
