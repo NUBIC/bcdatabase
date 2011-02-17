@@ -1,0 +1,30 @@
+PLATFORMS = {
+  :ruby18 => 'ruby-1.8.7-p330',
+  :jruby  => 'jruby-1.5.6',
+  :ruby19 => 'ruby-1.9.2-p0'
+}
+
+BUNDLER_VERSION = '1.0.10'
+
+def ci_env
+  (ENV["BCDATABASE_ENV"] || :ruby18).to_sym
+end
+
+namespace :ci do
+  task :rvmrc do
+    puts "#{PLATFORMS[ci_env]}@bcdatabase"
+  end
+
+  task :ensure_bundler_available do
+    unless Gem.available?('bundler', BUNDLER_VERSION)
+      puts "Installing bundler"
+      sh "gem install bundler -v '#{BUNDLER_VERSION}'"
+    end
+  end
+
+  task :setup => [:ensure_bundler_available] do
+    sh "bundle _#{BUNDLER_VERSION}_ update"
+  end
+end
+
+task :default => 'ci:setup'

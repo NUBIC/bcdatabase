@@ -22,4 +22,5 @@ Gem::Specification.new do |s|
   s.add_dependency "i18n"
 
   s.add_development_dependency 'rspec', "~> 1.2"
+  s.add_development_dependency "ci_reporter", "~> 1.6"
 end
