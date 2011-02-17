@@ -22,4 +22,5 @@ unless klass
   $stderr.puts Bcdatabase::Commands.help
   exit(2)
 end
-klass.new(ARGV).main
+
+exit(klass.new(ARGV).main)

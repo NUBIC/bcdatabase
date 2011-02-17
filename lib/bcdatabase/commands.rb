@@ -51,6 +51,7 @@ module Bcdatabase::Commands
       $stdin.readlines.each do |line|
         puts Bcdatabase.encrypt(line.chomp)
       end
+      0
     end
 
     def interactive
@@ -63,8 +64,8 @@ module Bcdatabase::Commands
         end
       rescue Interrupt
         puts "\nQuit"
-        exit(0)
       end
+      0
     end
   end
 
@@ -115,6 +116,7 @@ module Bcdatabase::Commands
         end
       outio.write(contents)
       outio.close
+      0
     end
   end
 
@@ -137,15 +139,14 @@ module Bcdatabase::Commands
         if klass
           msg = klass.respond_to?(:help) ? klass.help : klass.summary
           $stderr.puts msg
-          exit(0)
         else
           $stderr.puts "Unknown command #{@cmd}"
-          exit(1)
+          return 1
         end
       else
         $stderr.puts Bcdatabase::Commands.help
-        exit(0)
       end
+      0
     end
   end
 
@@ -190,6 +191,7 @@ module Bcdatabase::Commands
         end
       outio.write key
       outio.close
+      0
     end
 
     private
