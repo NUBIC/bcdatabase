@@ -1,5 +1,5 @@
-$LOAD_PATH.unshift(File.dirname(__FILE__))
 $LOAD_PATH.unshift(File.join(File.dirname(__FILE__), '..', 'lib'))
+
 require 'bcdatabase'
 require 'rubygems'
 require 'fileutils'
@@ -8,6 +8,18 @@ def temporary_yaml(name, hash)
   filename = "/#{ENV['BCDATABASE_PATH']}/#{name}.yaml"
   open(filename, "w") { |f| YAML.dump(hash, f) }
   filename
+end
+
+def capture_std
+  so = StringIO.new
+  se = StringIO.new
+  $stdout = so
+  $stderr = se
+  yield
+  { :out => so.string, :err => se.string }
+ensure
+  $stdout = STDOUT
+  $stderr = STDERR
 end
 
 def enable_fake_cipherment

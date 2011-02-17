@@ -1,6 +1,8 @@
 require File.expand_path("../spec_helper", File.dirname(__FILE__))
 
-require "bcdatabase/commands"
+module Bcdatabase::Commands
+  UTILITY_NAME = "bcdatabase-spec"
+end
 
 describe "CLI: bcdatabase" do
   before(:each) do
@@ -23,12 +25,9 @@ describe "CLI: bcdatabase" do
     end
 
     def bcdatabase_encrypt(infile)
-      StringIO.open("", "w") do |io|
-        $stdout = io
+      YAML::load(capture_std {
         Bcdatabase::Commands::Encrypt.new([File.join(ENV["BCDATABASE_PATH"], infile)]).main
-        $stdout = STDOUT
-        YAML::load(io.string)
-      end
+      }[:out])
     end
 
     it "replaces password: clauses with epasswords" do
@@ -50,6 +49,28 @@ describe "CLI: bcdatabase" do
       }
 
       bcdatabase_encrypt('plain.yaml')['single']['epassword'].should == 'etalocohc'
+    end
+  end
+
+  describe "help" do
+    def bcdatabase_help
+      capture_std { Bcdatabase::Commands::Help.new([]).main }[:err]
+    end
+
+    it "includes an entry for itself" do
+      bcdatabase_help.should =~ /help/
+    end
+
+    it "includes an entry for encrypt" do
+      bcdatabase_help.should =~ /encrypt/
+    end
+
+    it "includes an entry for epass" do
+      bcdatabase_help.should =~ /epass/
+    end
+
+    it "includes an entry for genkey" do
+      bcdatabase_help.should =~ /gen-key/
     end
   end
 end

@@ -2,6 +2,7 @@ require 'rubygems'
 require 'fileutils'
 require 'highline'
 require 'active_support'
+require 'active_support/core_ext/string/inflections'
 require 'bcdatabase'
 
 HL = HighLine.new

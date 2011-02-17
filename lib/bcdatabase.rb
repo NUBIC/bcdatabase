@@ -4,6 +4,9 @@ require 'digest/sha2'
 require 'base64'
 
 module Bcdatabase
+  autoload :VERSION,  'bcdatabase/version'
+  autoload :Commands, 'bcdatabase/commands'
+
   DEFAULT_BASE_PATH = File.join('/', 'etc', 'nubic', 'db')
   DEFAULT_PASS_FILE = File.join('/', 'var', 'lib', 'nubic', 'db.pass')
   CIPHER = 'aes-256-ecb'

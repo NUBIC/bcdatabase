@@ -1,5 +1,7 @@
 1.0.4
 =====
+- Fix command line utilities that were broken in 1.0.3 due to
+  inadequate test coverage.  (GH-4)
 
 1.0.3
 =====
