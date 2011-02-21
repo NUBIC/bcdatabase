@@ -1,5 +1,6 @@
 1.0.5
 =====
+- Loosen highline dependency so that bcdatabase can be used in buildr buildfiles.
 
 1.0.4
 =====

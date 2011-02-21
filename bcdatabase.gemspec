@@ -18,7 +18,7 @@ Gem::Specification.new do |s|
   s.files = Dir.glob("{CHANGELOG.markdown,LICENSE,README.markdown,{bin,lib}/**/*}")
 
   s.add_dependency "activesupport", ">= 2.0"
-  s.add_dependency "highline", "~> 1.6"
+  s.add_dependency "highline", "~> 1.5"
   s.add_dependency "i18n"
 
   s.add_development_dependency 'rspec', "~> 1.2"
