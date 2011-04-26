@@ -232,11 +232,11 @@ describe Bcdatabase do
 
     describe "an invalid reference" do
       before do
-        ::RAILS_ENV = "staging"
+        @original_rails_env, ENV['RAILS_ENV'] = ENV['RAILS_ENV'], 'staging'
       end
 
       after do
-        Object.class_eval { remove_const "RAILS_ENV" }
+        ENV['RAILS_ENV'] = @original_rails_env
       end
 
       describe "for the current RAILS_ENV" do

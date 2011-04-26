@@ -80,7 +80,7 @@ module Bcdatabase
       begin
         unseparated_yaml(n => self[groupname, dbname])
       rescue Bcdatabase::Error => e
-        if defined?(RAILS_ENV) and RAILS_ENV == n
+        if ENV['RAILS_ENV'] == n
           raise e
         else
           # Not using that configuration right now, so return a dummy instead
