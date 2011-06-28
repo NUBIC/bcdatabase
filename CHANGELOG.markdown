@@ -1,3 +1,6 @@
+1.0.7
+=====
+
 1.0.6
 =====
 - Use `ENV['RAILS_ENV']` instead of the unreliable `RAILS_ENV` constant.
