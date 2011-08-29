@@ -1,5 +1,6 @@
 pkg
 coverage
 Gemfile.lock
-rdoc
+doc
 reports
+.yardoc

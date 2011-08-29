@@ -12,16 +12,26 @@ module Bcdatabase
   CIPHER = 'aes-256-ecb'
 
   class << self
+    ##
+    # The main entry point for Bcdatabase.
+    #
+    # @return [DatabaseConfigurations] a new instance reflecting
+    #   either the passed-in path, the location indicated by
+    #   `BCDATABASE_PATH` in the environment, or the default location.
     def load(path=nil)
       path ||= base_path
       files = Dir.glob(File.join(path, "*.yml")) + Dir.glob(File.join(path, "*.yaml"))
       DatabaseConfigurations.new(files)
     end
 
+    ##
+    # @private exposed for collaboration
     def encrypt(s)
       Base64.encode64(encipher(:encrypt, s)).strip
     end
 
+    ##
+    # @private exposed for collaboration
     def decrypt(s)
       encipher(:decrypt, Base64.decode64(s))
     end
@@ -59,7 +69,14 @@ module Bcdatabase
     end
   end
 
+  ##
+  # The set of groups and entries returned by one call to {Bcdatabase.load}.
   class DatabaseConfigurations
+    ##
+    # Creates a configuration from a set of YAML files.
+    #
+    # General use of the library should not use this method, but
+    # instead should use {Bcdatabase.load}.
     def initialize(files)
       @files = files
       @map = { }
@@ -69,10 +86,18 @@ module Bcdatabase
       end
     end
 
+    ##
+    # @return [Hash] the entry for the given group and name after all
+    #   transformation is complete.
     def [](groupname, dbname)
       create_entry(groupname.to_s, dbname.to_s)
     end
 
+    ##
+    # This method implements the Rails database.yml integration
+    # described in full in the {file:README.markdown}.
+    #
+    # @return [String] a YAMLized view of a configuration entry.
     def method_missing(name, *args)
       groupname = (args[0] or raise "Database configuration group not specified for #{name}")
       dbname = (args[1] or raise "Database entry name not specified for #{name}")
