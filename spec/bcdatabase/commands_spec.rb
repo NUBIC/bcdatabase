@@ -5,14 +5,18 @@ module Bcdatabase::Commands
 end
 
 describe "CLI: bcdatabase" do
-  before(:each) do
+  before do
+    pending('Issue #7') if RUBY_VERSION > '1.9'
+
     ENV["BCDATABASE_PATH"] = "/tmp/bcdb_specs"
     FileUtils.mkdir_p ENV["BCDATABASE_PATH"]
   end
 
   after(:each) do
-    FileUtils.rm_rf ENV["BCDATABASE_PATH"]
-    ENV["BCDATABASE_PATH"] = nil
+    if RUBY_VERSION < '1.9'
+      FileUtils.rm_rf ENV["BCDATABASE_PATH"]
+      ENV["BCDATABASE_PATH"] = nil
+    end
   end
 
   describe "encrypt" do
@@ -21,7 +25,9 @@ describe "CLI: bcdatabase" do
     end
 
     after do
-      disable_fake_cipherment
+      if RUBY_VERSION < '1.9'
+        disable_fake_cipherment
+      end
     end
 
     def bcdatabase_encrypt(infile)
