@@ -149,12 +149,12 @@ which assists with creating `epassword` entries.  It has online help;
 after installing the gem, try `bcdatabase help` to read it:
 
     $ bcdatabase help
-    usage: bcdatabase <command> [args]
-    Command-line utility for bcdatabase 1.0.0
-      encrypt  Encrypts all the password entries in a bcdatabase YAML file
-        epass  Generate epasswords from individual database passwords
-      gen-key  Generate a key for bcdatabase to use
-         help  List commands or display help for one
+    Tasks:
+      bcdatabase encrypt [INPUT [OUTPUT]]  # Encrypts every password in a bcdatabase YAML file.
+      bcdatabase epass [-]                 # Generates epasswords from database passwords
+      bcdatabase gen-key [-]               # Generates the bcdatabase shared key
+      bcdatabase help [TASK]               # Describe available tasks or one specific task
+
 
 ## File locations
 
