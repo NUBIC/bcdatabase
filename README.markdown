@@ -150,11 +150,10 @@ after installing the gem, try `bcdatabase help` to read it:
 
     $ bcdatabase help
     Tasks:
-      bcdatabase encrypt [INPUT [OUTPUT]]  # Encrypts every password in a bcdatabase YAML file.
-      bcdatabase epass [-]                 # Generates epasswords from database passwords
-      bcdatabase gen-key [-]               # Generates the bcdatabase shared key
+      bcdatabase encrypt [INPUT [OUTPUT]]  # Encrypt every password in a bcdatabase YAML file
+      bcdatabase epass [-]                 # Generate epasswords from database passwords
+      bcdatabase gen-key [-]               # Generate the bcdatabase shared key
       bcdatabase help [TASK]               # Describe available tasks or one specific task
-
 
 ## File locations
 

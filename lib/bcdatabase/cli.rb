@@ -4,7 +4,7 @@ require 'thor'
 module Bcdatabase
   class CLI < Thor
     desc "encrypt [INPUT [OUTPUT]]",
-      "Encrypts every password in a bcdatabase YAML file."
+      "Encrypt every password in a bcdatabase YAML file"
     long_desc <<-DESC
       This command finds all the keys named 'password' in the input
       YAML and substitutes appropriate 'epassword' keys.
@@ -23,7 +23,7 @@ module Bcdatabase
       Commands::Encrypt.new(inputfile, outputfile).run
     end
 
-    desc 'epass [-]', 'Generates epasswords from database passwords'
+    desc 'epass [-]', 'Generate epasswords from database passwords'
     long_desc <<-DESC
       With no arguments, interactively prompts for passwords and
       prints the corresponding epassword entry.
@@ -36,7 +36,7 @@ module Bcdatabase
       Commands::Epass.new(arg == '-').run
     end
 
-    desc 'gen-key [-]', 'Generates the bcdatabase shared key'
+    desc 'gen-key [-]', 'Generate the bcdatabase shared key'
     long_desc <<-DESC
       Generates the key that is used to obscure epasswords. By
       default, the key will be generated in

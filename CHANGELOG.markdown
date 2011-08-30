@@ -10,6 +10,8 @@ Bcdatabase history
   entries between ActiveRecord and DataMapper. (#10)
 - Rework command-line interface for better testability. It's now
   compatible with MRI 1.9. (#11, #7)
+- Provide a better message when working with encrypted passwords and
+  the keyfile is not readable. (#1)
 
 1.0.6
 -----
