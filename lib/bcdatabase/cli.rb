@@ -61,6 +61,10 @@ module Bcdatabase
             #{original}_without_rescue(*args)
           rescue SystemCallError => e
             shell.say("\#{e.class}: \#{e}", :RED)
+            exit(8)
+          rescue Bcdatabase::Error => e
+            shell.say(e.message, :RED)
+            exit(4)
           rescue Commands::ForcedExit => e
             exit(e.code)
           end

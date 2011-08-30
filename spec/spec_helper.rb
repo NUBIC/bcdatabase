@@ -40,8 +40,12 @@ module Bcdatabase::Spec
       end
       $stdout = so
       $stderr = se
-      yield
-      { :out => so.string, :err => se.string }
+      begin
+        yield
+        { :out => so.string, :err => se.string }
+      rescue => e
+        { :out => so.string, :err => se.string, :exception => e }
+      end
     ensure
       $stdout = STDOUT
       $stderr = STDERR

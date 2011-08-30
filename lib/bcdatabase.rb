@@ -2,6 +2,7 @@ require 'yaml'
 require 'openssl'
 require 'digest/sha2'
 require 'base64'
+require 'pathname'
 
 # Requiring just extract_options doesn't work on AS 2.3.
 require 'active_support/core_ext/array'
@@ -60,7 +61,7 @@ module Bcdatabase
     end
 
     def pass_file
-      ENV["BCDATABASE_PASS"] || DEFAULT_PASS_FILE
+      Pathname.new(ENV["BCDATABASE_PASS"] || DEFAULT_PASS_FILE)
     end
 
     private
@@ -76,15 +77,30 @@ module Bcdatabase
     end
 
     def pass
-      return @pass if instance_variable_defined? :@pass
+      @passes ||= { }
+      @passes[pass_file] ||=
+        begin
+          contents = read_pass_file
+          # This code may not work correctly on Ruby 1.9
+          if contents.size == 32
+            contents
+          else
+            Digest::SHA256.digest(contents)
+          end
+        end
+    end
 
-      contents = open(pass_file).read.chomp
-      # This code may not work correctly on Ruby 1.9
-      if contents.size == 32
-        @pass = contents
-      else
-        @pass = Digest::SHA256.digest(contents)
+    def read_pass_file
+      unless pass_file.readable?
+        msg = [
+          "Bcdatabase keyfile #{pass_file} is not readable. Possible solutions:",
+          "* Use bcdatabase gen-key to generate a key",
+          "* Change the path by setting BCDATABASE_PASS in the environment",
+          "* Check the permissions on #{pass_file}"
+        ].compact.join("\n")
+        raise Bcdatabase::Error, msg
       end
+      pass_file.read
     end
 
     def base_path
@@ -177,5 +193,5 @@ module Bcdatabase
     end
   end
 
-  class Error < Exception; end
+  class Error < StandardError; end
 end

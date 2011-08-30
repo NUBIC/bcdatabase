@@ -12,13 +12,14 @@ describe Bcdatabase do
   end
 
   describe "cipherment" do
-    before(:all) do
-      keyfile = tmpdir + 'bcdb-spec-key'
+    let(:keyfile) { tmpdir + 'bcdb-spec-key' }
+
+    before do
       open(keyfile, 'w') { |f| f.write "01234567890123456789012345678901" }
       ENV["BCDATABASE_PASS"] = keyfile.to_s
     end
 
-    after(:all) do
+    after do
       ENV["BCDATABASE_PASS"] = nil
     end
 
@@ -33,6 +34,68 @@ describe Bcdatabase do
 
     it "should do more than just encode" do
       Bcdatabase.encrypt("zanzibar").should_not == Base64.encode64("zanzibar")
+    end
+
+    context 'when the keyfile does not exist' do
+      let(:bad_keyfile) { tmpdir + 'nothing' + 'here.key' }
+
+      before do
+        ENV['BCDATABASE_PASS'] = bad_keyfile.to_s
+      end
+
+      shared_examples 'ciphering without a keyfile' do
+        let(:result) {
+          capture_std do
+            Bcdatabase.send(method, datum)
+          end
+        }
+
+        it 'throws an exception' do
+          result[:exception].should be_a Bcdatabase::Error
+        end
+
+        it 'does not print anything on STDOUT' do
+          result[:out].should == ''
+        end
+
+        it 'does not print anything on STDERR' do
+          result[:err].should == ''
+        end
+
+        describe 'the message' do
+          let(:message) { result[:exception].message }
+
+          it 'mentions the problem' do
+            message.should =~ /Bcdatabase keyfile #{bad_keyfile} is not readable/
+          end
+
+          it 'mentions gen-key' do
+            message.should =~ /bcdatabase gen-key/
+          end
+
+          it 'mentions the BCDATABASE_PASS env var' do
+            message.should =~ /BCDATABASE_PASS/
+          end
+
+          it 'suggests checking permissions' do
+            message.should =~ /permissions/
+          end
+        end
+      end
+
+      describe 'Bcdatabase.encrypt' do
+        let(:method) { :encrypt }
+        let(:datum) { 'zanzibar' }
+
+        include_examples 'ciphering without a keyfile'
+      end
+
+      describe 'Bcdatabase.decrypt' do
+        let(:method) { :decrypt }
+        let(:datum) { Base64.encode64('zanzibar') }
+
+        include_examples 'ciphering without a keyfile'
+      end
     end
   end
 
