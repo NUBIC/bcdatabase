@@ -86,6 +86,12 @@ module Bcdatabase::Commands
 
         include_examples 'general behavior'
       end
+
+      context 'when the output directory does not exist' do
+        let(:out_path) { tmpdir + 'new' + 'encrypted.yml' }
+
+        include_examples 'general behavior'
+      end
     end
   end
 end

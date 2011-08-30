@@ -3,28 +3,37 @@ require 'bcdatabase/commands'
 module Bcdatabase::Commands
   class Encrypt
     def initialize(inputfile=nil, outputfile=nil)
-      @input = inputfile
-      @output = outputfile
+      @input = (Pathname.new(inputfile) if inputfile)
+      @output = (Pathname.new(outputfile) if outputfile)
     end
 
     def run
-      inio =
-        if @input
-          open(@input, "r")
-        else
-          $stdin
-        end
       # try to preserve the order by replacing everything using regexes
       contents = inio.read
       contents.gsub!(/\bpassword:(\s*)(\S+)\s*?$/) { "epassword:#{$1}#{Bcdatabase.encrypt($2)}" }
-      outio =
+      outio.write(contents)
+      outio.close
+    end
+
+    private
+
+    def inio
+      @inio ||=
+        if @input
+          @input.open('r')
+        else
+          $stdin
+        end
+    end
+
+    def outio
+      @outio ||=
         if @output
-          open(@output, "w")
+          @output.dirname.mkpath
+          @output.open('w')
         else
           $stdout
         end
-      outio.write(contents)
-      outio.close
     end
   end
 end
