@@ -1,8 +1,11 @@
 Bcdatabase history
 ==================
 
-1.0.7
+1.1.0
 -----
+
+- Introduce "transforms" -- a way to attach behavior to modify entries
+  on load. See {Bcdatabase.load} for details.
 
 1.0.6
 -----

@@ -192,6 +192,28 @@ describe Bcdatabase do
         bcdb['secure', 'safe']['password'].should == "foom" # not "fake"
       end
     end
+
+    describe 'with custom transform' do
+      let(:transform) {
+        lambda do |entry, name, group|
+          entry.merge('foo' => ['baz', name, group])
+        end
+      }
+
+      it 'applies the transform' do
+        temporary_yaml "scran", {
+          "default" => {
+            "database" => "//localhost:345/etc"
+          },
+          "jim" => {
+            "password" => "leather",
+          }
+        }
+
+        bcdb = Bcdatabase.load(:transforms => [transform])
+        bcdb['scran', 'jim']['foo'].should == ['baz', 'jim', 'scran']
+      end
+    end
   end
 
   describe "for database.yml" do

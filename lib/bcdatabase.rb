@@ -3,6 +3,9 @@ require 'openssl'
 require 'digest/sha2'
 require 'base64'
 
+# Requiring just extract_options doesn't work on AS 2.3.
+require 'active_support/core_ext/array'
+
 module Bcdatabase
   autoload :VERSION,  'bcdatabase/version'
   autoload :Commands, 'bcdatabase/commands'
@@ -15,13 +18,32 @@ module Bcdatabase
     ##
     # The main entry point for Bcdatabase.
     #
-    # @return [DatabaseConfigurations] a new instance reflecting
-    #   either the passed-in path, the location indicated by
-    #   `BCDATABASE_PATH` in the environment, or the default location.
-    def load(path=nil)
-      path ||= base_path
+    # @overload load(options={})
+    #   (See other alternative for option definitions.)
+    #   @return [DatabaseConfigurations] a new instance using the
+    #     default path.
+    # @overload load(path=nil, options={})
+    #   @param [String,nil] path the directory to load from. If nil,
+    #     will use the value in the environment variable
+    #     `BCDATABASE_PATH`. If that's nil, too, it will use the
+    #     default path.
+    #   @param [Hash,nil] options additional options affecting the
+    #     load behavior.
+    #   @option options :transforms [Array<Symbol, #call>] ([]) Custom
+    #     transforms. This can either be a symbol naming a
+    #     {DatabaseConfigurations.BUILT_IN_TRANSFORMS built-in
+    #     transform} or a callable which is the transform itself. A
+    #     transform is a function that takes three arguments (the
+    #     entry itself, the entry name, and the group name) and
+    #     returns a new copy, modified as desired. It may also return
+    #     nil to indicate that it doesn't wish to make any changes.
+    #   @return [DatabaseConfigurations] a new instance reflecting
+    #     the selected path.
+    def load(*args)
+      options = args.extract_options!
+      path ||= (args.first || base_path)
       files = Dir.glob(File.join(path, "*.yml")) + Dir.glob(File.join(path, "*.yaml"))
-      DatabaseConfigurations.new(files)
+      DatabaseConfigurations.new(files, options[:transforms] || [])
     end
 
     ##
@@ -72,12 +94,30 @@ module Bcdatabase
   ##
   # The set of groups and entries returned by one call to {Bcdatabase.load}.
   class DatabaseConfigurations
+    BUILT_IN_TRANSFORMS = {
+      :key_defaults => lambda { |entry, name, group|
+        { 'username' => name, 'database' => name }.merge(entry)
+      },
+      :decrypt => lambda { |entry, name, group|
+        entry.merge({ 'password' => Bcdatabase.decrypt(entry['epassword']) }) if entry['epassword']
+      }
+    }
+
     ##
     # Creates a configuration from a set of YAML files.
     #
     # General use of the library should not use this method, but
     # instead should use {Bcdatabase.load}.
-    def initialize(files)
+    def initialize(files, transforms=[])
+      @transforms = ([:key_defaults, :decrypt] + transforms).collect do |t|
+        case t
+        when Symbol
+          BUILT_IN_TRANSFORMS[t] or fail "No built-in transform named #{t.inspect}"
+        else
+          fail 'Transforms must by callable' unless t.respond_to?(:call)
+          t
+        end
+      end
       @files = files
       @map = { }
       files.each do |filename|
@@ -120,15 +160,12 @@ module Bcdatabase
     def create_entry(groupname, dbname)
       group = @map[groupname] or raise Error.new("No database configuration group named #{groupname.inspect} found.  (Found #{@map.keys.inspect}.)")
       db = group[dbname] or raise Error.new("No database entry for #{dbname.inspect} in #{groupname}")
-      merged = { 'username' => dbname, 'database' => dbname } \
-        .merge(group['defaults'] || {}) \
-        .merge(group['default'] || {}) \
-        .merge(db)
-      # include the decrypted password if an encrypted one was provided
-      if merged['epassword']
-        merged['password'] = Bcdatabase.decrypt(merged['epassword'])
+      base = (group['defaults'] || {}).
+        merge(group['default'] || {}).
+        merge(db)
+      @transforms.inject(base) do |result, transform|
+        transform.call(result, dbname, groupname) || result
       end
-      merged
     end
 
     def unseparated_yaml(arg)
