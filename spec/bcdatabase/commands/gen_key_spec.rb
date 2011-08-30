@@ -72,14 +72,12 @@ module Bcdatabase::Commands
         end
 
         it 'does not overwrite if the user backs out' do
-          begin
+          lambda {
             replace_stdin('no') do
               output
             end
             fail "Exception not thrown"
-          rescue ForcedExit => e
-            e.code.should == 1
-          end
+          }.should raise_error(ForcedExit)
 
           keyfile_contents.size.should == 0
         end

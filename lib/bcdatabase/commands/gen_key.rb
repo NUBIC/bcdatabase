@@ -1,5 +1,6 @@
 require 'bcdatabase/commands'
 require 'highline'
+require 'pathname'
 
 module Bcdatabase::Commands
   class GenKey
@@ -33,14 +34,14 @@ module Bcdatabase::Commands
     end
 
     def open_key_file
-      filename = Bcdatabase.pass_file
-      if File.exist?(filename)
-        unless @hl.agree("This operation will overwrite the existing pass file.\n  Are you sure you want to do that? ")
+      filename = Pathname.new(Bcdatabase.pass_file)
+      if filename.exist?
+        unless @hl.agree("This operation will overwrite the existing pass file.\n  Are you sure you want to do that? (y/n) ")
           raise ForcedExit.new(1)
         end
       end
       @close_out = true
-      open(filename, 'w')
+      filename.open('w')
     end
   end
 end
