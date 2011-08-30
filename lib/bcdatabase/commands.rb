@@ -1,14 +1,13 @@
 require 'rubygems'
 require 'fileutils'
 require 'highline'
-require 'active_support'
-require 'active_support/core_ext/string/inflections'
 require 'bcdatabase'
 
 HL = HighLine.new
 
 module Bcdatabase::Commands
   autoload :Encrypt, 'bcdatabase/commands/encrypt'
+  autoload :Epass, 'bcdatabase/commands/epass'
 
   class Base
     protected
@@ -21,54 +20,6 @@ module Bcdatabase::Commands
       msg = [ "#{command_name}: #{summary}", usage(use), "" ]
       yield msg if block_given?
       msg.join("\n")
-    end
-  end
-
-  class Epass < Base
-    def initialize(argv)
-      @streaming = argv[-1] == '-'
-    end
-
-    def self.summary
-      "Generate epasswords from individual database passwords"
-    end
-
-    def self.help
-      help_message("epass [-]") do |msg|
-        msg << "With no arguments, interactively prompts for passwords and"
-        msg << "  prints the corresponding epassword entry."
-        msg << ""
-        msg << "If the last argument is -, reads a newline-separated list"
-        msg << "  of passwords from standard in and prints the corresponding "
-        msg << "  epasswords to standard out."
-      end
-    end
-
-    def main
-      @streaming ? streamed : interactive
-    end
-
-    private
-
-    def streamed
-      $stdin.readlines.each do |line|
-        puts Bcdatabase.encrypt(line.chomp)
-      end
-      0
-    end
-
-    def interactive
-      begin
-        loop do
-          pass = HL.ask("Password (^C to end): ") do |q|
-            q.echo = false
-          end
-          puts "  epassword: #{Bcdatabase.encrypt(pass)}"
-        end
-      rescue Interrupt
-        puts "\nQuit"
-      end
-      0
     end
   end
 

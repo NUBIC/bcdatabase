@@ -22,5 +22,18 @@ module Bcdatabase
     def encrypt(inputfile=nil, outputfile=nil)
       Commands::Encrypt.new(inputfile, outputfile).run
     end
+
+    desc 'epass [-]', 'Generates epasswords from database passwords'
+    long_desc <<-DESC
+      With no arguments, interactively prompts for passwords and
+      prints the corresponding epassword entry.
+
+      If the last argument is -, reads a newline-separated list of
+      passwords from standard in and prints the corresponding
+      epasswords to standard out.
+    DESC
+    def epass(arg=nil)
+      Commands::Epass.new(arg == '-').run
+    end
   end
 end
