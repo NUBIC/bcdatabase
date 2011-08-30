@@ -8,13 +8,12 @@ describe "CLI: bcdatabase" do
   before do
     pending('Issue #7') if RUBY_VERSION > '1.9'
 
-    ENV["BCDATABASE_PATH"] = "/tmp/bcdb_specs"
+    ENV["BCDATABASE_PATH"] = tmpdir + 'bcdb_specs'
     FileUtils.mkdir_p ENV["BCDATABASE_PATH"]
   end
 
   after(:each) do
     if RUBY_VERSION < '1.9'
-      FileUtils.rm_rf ENV["BCDATABASE_PATH"]
       ENV["BCDATABASE_PATH"] = nil
     end
   end
