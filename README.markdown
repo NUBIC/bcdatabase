@@ -172,12 +172,12 @@ default location, but that location can be overridden by setting
 
 ## Platforms
 
-Bcdatabase works on MRI 1.8.7. It will also work on JRuby (tested on
-1.6+), provided that `jruby-openssl` is also installed. It does not
-entirely work [on 1.9][issue7], though this support is planned for the
-future.
+Bcdatabase works on MRI 1.8.7 and MRI 1.9.2. It will also work on
+JRuby (tested on 1.6+), provided that `jruby-openssl` is also
+installed. It is [continuously tested][ci] on all three of these
+platforms.
 
-[issue7]: https://github.com/NUBIC/bcdatabase/issues/7
+[ci]: https://public-ci.nubic.northwestern.edu/job/bcdatabase/
 
 ## Credits
 
