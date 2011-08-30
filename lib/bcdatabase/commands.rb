@@ -8,6 +8,8 @@ require 'bcdatabase'
 HL = HighLine.new
 
 module Bcdatabase::Commands
+  autoload :Encrypt, 'bcdatabase/commands/encrypt'
+
   class Base
     protected
 
@@ -66,57 +68,6 @@ module Bcdatabase::Commands
       rescue Interrupt
         puts "\nQuit"
       end
-      0
-    end
-  end
-
-  class Encrypt < Base
-    def initialize(argv)
-      @input = argv.shift
-      @output = argv.shift
-    end
-
-    def self.summary
-      "Encrypts all the password entries in a bcdatabase YAML file"
-    end
-
-    def self.help
-      help_message("encrypt [inputfile [outputfile]]") do |msg|
-        msg << "Specifically, this command finds all the keys named 'password'"
-        msg << "  in the input YAML and substitutes appropriate 'epassword'"
-        msg << "  keys."
-        msg << ""
-        msg << "If inputfile is specified, the source will be that file."
-        msg << "  If not, the source will be standard in."
-        msg << ""
-        msg << "If inputfile and outputfile are specified, the new file"
-        msg << "  will be written to the output file.  Otherwise the output"
-        msg << "  will go to standard out.  Input and output may be the same"
-        msg << "  file."
-        msg << ""
-        msg << "You can't read from standard in and write to a file directly; "
-        msg << "  use shell file redirection if you need to do that."
-      end
-    end
-
-    def main
-      inio =
-        if @input
-          open(@input, "r")
-        else
-          $stdin
-        end
-      # try to preserve the order by replacing everything using regexes
-      contents = inio.read
-      contents.gsub!(/\bpassword:(\s*)(\S+)\s*?$/) { "epassword:#{$1}#{Bcdatabase.encrypt($2)}" }
-      outio =
-        if @output
-          open(@output, "w")
-        else
-          $stdout
-        end
-      outio.write(contents)
-      outio.close
       0
     end
   end

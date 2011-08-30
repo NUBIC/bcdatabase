@@ -1,26 +1,20 @@
-#!/usr/bin/env ruby -W
+#!/usr/bin/env ruby
 
-require 'rubygems'
-require 'bcdatabase/commands'
-
-module Bcdatabase::Commands
-  UTILITY_NAME = File.basename(__FILE__)
+# Allow this executable to be run directly from the source as well as
+# from an installed gem.
+begin
+  lib = File.expand_path('../../lib', __FILE__)
+  unless $LOAD_PATH.include?(lib)
+    $LOAD_PATH << lib
+    require 'rubygems'
+  end
 end
 
-###### MAIN
+require 'bcdatabase'
 
-command = ARGV.shift
-unless command
-  $stderr.puts "Please specify a command."
-  $stderr.puts Bcdatabase::Commands.help
-  exit(1)
+begin
+  Bcdatabase::CLI.start
+rescue Interrupt => e
+  $stderr.puts "Interrupted"
+  exit 1
 end
-
-klass = Bcdatabase::Commands[command]
-unless klass
-  $stderr.puts "Unknown command #{command}."
-  $stderr.puts Bcdatabase::Commands.help
-  exit(2)
-end
-
-exit(klass.new(ARGV).main)

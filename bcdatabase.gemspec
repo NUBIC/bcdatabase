@@ -20,6 +20,7 @@ Gem::Specification.new do |s|
   s.add_dependency "activesupport", ">= 2.0"
   s.add_dependency "highline", "~> 1.5"
   s.add_dependency "i18n"
+  s.add_dependency 'thor', '~> 0.14.6'
 
   s.add_development_dependency 'bundler', '~> 1.0.15'
   s.add_development_dependency 'rake', '~> 0.9.2'

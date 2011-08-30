@@ -8,6 +8,7 @@ require 'active_support/core_ext/array'
 
 module Bcdatabase
   autoload :VERSION,  'bcdatabase/version'
+  autoload :CLI,      'bcdatabase/cli'
   autoload :Commands, 'bcdatabase/commands'
 
   DEFAULT_BASE_PATH = File.join('/', 'etc', 'nubic', 'db')
