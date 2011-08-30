@@ -120,7 +120,7 @@ You have defined two configuration entries.  `:stage, :cfg_animal`:
     password: secret
     database: //mondo/stage
 
-and `:bcstage, :personnel`:
+and `:stage, :personnel`:
 
     adapter:  oracle_enhanced
     username: pers
@@ -169,6 +169,48 @@ privileges &mdash; you could add this to `~/.bashrc`:
 Similarly, the file containing the encryption password has a sensible
 default location, but that location can be overridden by setting
 `BCDATABASE_PASS`.
+
+## DataMapper
+
+Bcdatabase was originally designed for use with ActiveRecord in Rails
+applications. Since DataMapper's programmatic configuration mechanism
+(`Datamapper.setup`) accepts hashes which are very similar to
+ActiveRecord configuration hashes, Bcdatabase can easily be used with
+DataMapper as well. Example:
+
+    bcdb = Bcdatabase.load(:transforms => [:datamapper]))
+    DataMapper.setup(:default, bcdb[:stage, :personnel])
+
+The `:datamapper` transform passed to `Bcdatabase.load` permits
+sharing of one set of Bcdatabase configurations between ActiveRecord
+and DataMapper-based apps. Specifically, for those cases where the
+ActiveRecord adapter and the DataMapper adapter have different names,
+it allows you to specify a separate `datamapper_adapter` in your
+Bcdatabase configuration. For example, say you had these contents in
+`stage.yml`:
+
+    defaults:
+      adapter: postgresql
+      datamapper_adapter: postgres
+    personnel:
+      password: foo
+
+When loaded without the `:datamapper` transform, the effective
+database configuration hash for `:stage, :personnel` would be
+
+    adapter: postgresql
+    datamapper_adapter: postgres # ignored by AR
+    database: personnel
+    username: personnel
+
+With the `:datamapper` transform, the result would be instead:
+
+    adapter: postgres
+    database: personnel
+    username: personnel
+
+And so your DM and AR apps can live side-by-side and neither needs to
+embed its own database credentials.
 
 ## Platforms
 
