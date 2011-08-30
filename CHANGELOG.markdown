@@ -8,6 +8,8 @@ Bcdatabase history
   on load. See {Bcdatabase.load} for details.
 - Add `:datamapper` built-in transform to support sharing one set of
   entries between ActiveRecord and DataMapper. (#10)
+- Rework command-line interface for better testability. It's now
+  compatible with MRI 1.9. (#11, #7)
 
 1.0.6
 -----
