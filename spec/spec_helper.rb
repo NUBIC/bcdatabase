@@ -35,6 +35,9 @@ module Bcdatabase::Spec
     def capture_std
       so = StringIO.new
       se = StringIO.new
+      [so, se].each do |s|
+        s.set_encoding('ASCII-8BIT') if s.respond_to?(:set_encoding)
+      end
       $stdout = so
       $stderr = se
       yield

@@ -25,6 +25,12 @@ module Bcdatabase::Commands
 
       let(:keydir)  { tmpdir + 'var' }
       let(:keyfile) { keydir + 'key' }
+      let(:read_opts) {
+        if RUBY_VERSION > '1.9'
+          { :encoding => 'ASCII-8BIT' }
+        end
+      }
+      let(:keyfile_contents) { File.read(keyfile, read_opts) }
 
       before do
         ENV['BCDATABASE_PASS'] = keyfile.to_s
@@ -42,7 +48,7 @@ module Bcdatabase::Commands
       context 'when the file does not exist' do
         it 'creates the file' do
           output
-          File.read(keyfile).size.should == 128
+          keyfile_contents.size.should == 128
         end
       end
 
@@ -62,7 +68,7 @@ module Bcdatabase::Commands
             output
           end
 
-          File.read(keyfile).size.should == 128
+          keyfile_contents.size.should == 128
         end
 
         it 'does not overwrite if the user backs out' do
@@ -75,7 +81,7 @@ module Bcdatabase::Commands
             e.code.should == 1
           end
 
-          File.read(keyfile).size.should == 0
+          keyfile_contents.size.should == 0
         end
       end
     end
