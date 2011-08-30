@@ -18,6 +18,12 @@ module Bcdatabase
 
       You can't read from standard in and write to a file directly;
       use shell file redirection if you need to do that.
+
+      N.b.: this command works with a subset of legal YAML
+      files. Specifically, it will only work if the 'password' key and
+      value are entirely on the same line. If for some reason you
+      can't arrange for your input files to meet this restriction, you
+      can use the epass subcommand to encrypt one password at a time.
     DESC
     def encrypt(inputfile=nil, outputfile=nil)
       Commands::Encrypt.new(inputfile, outputfile).run

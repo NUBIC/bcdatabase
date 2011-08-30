@@ -12,6 +12,9 @@ Bcdatabase history
   compatible with MRI 1.9. (#11, #7)
 - Provide a better message when working with encrypted passwords and
   the keyfile is not readable. (#1)
+- Improve `bcdatabase encrypt` so that it will work with a wider
+  variety of input passwords and YAML files. The remaining limitations
+  are documented in its online help. (#12)
 
 1.0.6
 -----

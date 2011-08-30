@@ -1,21 +1,32 @@
 require File.expand_path('../../../spec_helper', __FILE__)
 
+require 'pathname'
+
 module Bcdatabase::Commands
   describe Encrypt do
-    let(:pprod_path) { File.join(ENV['BCDATABASE_PATH'], 'pprod.yaml') }
+    let(:pprod_path) { Pathname.new(ENV['BCDATABASE_PATH']) + 'pprod.yaml' }
+    let(:pprod_lines) {
+      [
+        'wh:',
+        '  password: zanzibar',
+        'app:',
+        '  epassword: etalocohc',
+        'dquoter:',
+        '  password: "mackinac"',
+        'squoter:',
+        "  password: 'island'",
+        'ws:',
+        '  password: fat elvis  '
+      ]
+    }
 
     before do
       enable_fake_cipherment
       ENV['BCDATABASE_PATH'] = (tmpdir + 'base').tap { |d| d.mkpath }.to_s
 
-      temporary_yaml 'pprod', {
-        'wh' => {
-          'password' => 'zanzibar'
-        },
-        'app' => {
-          'epassword' => 'etalocohc'
-        }
-      }
+      pprod_path.open('w') do |f|
+        pprod_lines.each { |l| f.puts l }
+      end
     end
 
     after do
@@ -55,10 +66,22 @@ module Bcdatabase::Commands
       it 'leaves any existing epasswords alone' do
         yaml_output['app']['epassword'].should == 'etalocohc'
       end
+
+      it 'handles internal whitespace' do
+        yaml_output['ws']['epassword'].should == 'sivle taf'
+      end
+
+      it 'handles double-quoted passwords' do
+        yaml_output['dquoter']['epassword'].should == 'canikcam'
+      end
+
+      it 'handles single-quoted passwords' do
+        yaml_output['squoter']['epassword'].should == 'dnalsi'
+      end
     end
 
     describe 'with zero arguments' do
-      subject { run_with_input('wh:', '  password: zanzibar', 'app:', '  epassword: etalocohc') }
+      subject { run_with_input(*pprod_lines) }
 
       let(:output) { subject[:out] }
 

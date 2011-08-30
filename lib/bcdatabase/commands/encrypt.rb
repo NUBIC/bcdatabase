@@ -11,7 +11,9 @@ module Bcdatabase::Commands
       begin
         # try to preserve the order by replacing everything using regexes
         contents = inio.read
-        contents.gsub!(/\bpassword:(\s*)(\S+)\s*?$/) { "epassword:#{$1}#{Bcdatabase.encrypt($2)}" }
+        contents.gsub!(/\bpassword:.*?$/) { |line|
+          "epassword: #{Bcdatabase.encrypt(YAML.load(line)['password'])}"
+        }
         outio.write(contents)
       ensure
         @inio.close if @close_in && @inio
