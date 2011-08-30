@@ -35,5 +35,22 @@ module Bcdatabase
     def epass(arg=nil)
       Commands::Epass.new(arg == '-').run
     end
+
+    desc 'gen-key [-]', 'Generates the bcdatabase shared key'
+    long_desc <<-DESC
+      Generates the key that is used to obscure epasswords. By
+      default, the key will be generated in
+      #{Bcdatabase.pass_file}.  If the last argument to this command
+      is -, the key will be generated to standard out instead.
+
+      CAUTION: writing to #{Bcdatabase.pass_file} may overwrite an
+      existing bcdatabase key.  If that happens, you will need to
+      reencrypt all the epasswords on this machine.
+    DESC
+    def gen_key(arg=nil)
+      Commands::GenKey.new(arg == '-').run
+    rescue Commands::ForcedExit => e
+      exit(e.code)
+    end
   end
 end
