@@ -49,8 +49,23 @@ module Bcdatabase
     DESC
     def gen_key(arg=nil)
       Commands::GenKey.new(arg == '-').run
-    rescue Commands::ForcedExit => e
-      exit(e.code)
+    end
+
+    no_tasks do
+      # Add uniform exception handling
+      [:encrypt, :epass, :gen_key].each do |original|
+        alias_method "#{original}_without_rescue".to_sym, original
+
+        class_eval <<-RUBY
+          def #{original}(*args)
+            #{original}_without_rescue(*args)
+          rescue SystemCallError => e
+            shell.say("\#{e.class}: \#{e}", :RED)
+          rescue Commands::ForcedExit => e
+            exit(e.code)
+          end
+        RUBY
+      end
     end
   end
 end
