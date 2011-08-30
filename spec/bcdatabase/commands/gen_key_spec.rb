@@ -23,7 +23,7 @@ module Bcdatabase::Commands
     describe 'to a file' do
       subject { GenKey.new(false) }
 
-      let(:keydir)  { tmpdir + 'var' }
+      let(:keydir)  { tmpdir }
       let(:keyfile) { keydir + 'key' }
       let(:read_opts) {
         if RUBY_VERSION > '1.9'
@@ -34,7 +34,6 @@ module Bcdatabase::Commands
 
       before do
         ENV['BCDATABASE_PASS'] = keyfile.to_s
-        keydir.mkpath
       end
 
       after do
@@ -43,6 +42,22 @@ module Bcdatabase::Commands
 
       it 'produces no output on STDOUT' do
         output[:out].should == ''
+      end
+
+      context 'when the directory does not exist' do
+        let(:keydir) { tmpdir + 'var' }
+
+        before do
+          output
+        end
+
+        it 'creates the directory' do
+          keydir.should be_readable
+        end
+
+        it 'creates the file' do
+          keyfile_contents.size.should == 128
+        end
       end
 
       context 'when the file does not exist' do

@@ -41,6 +41,7 @@ module Bcdatabase::Commands
         end
       end
       @close_out = true
+      filename.dirname.mkpath
       filename.open('w')
     end
   end
