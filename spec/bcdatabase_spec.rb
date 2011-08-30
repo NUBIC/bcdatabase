@@ -2,7 +2,7 @@ require File.expand_path("spec_helper", File.dirname(__FILE__))
 
 describe Bcdatabase do
   before(:each) do
-    ENV["BCDATABASE_PATH"] = tmpdir + 'bcdb_specs'
+    ENV["BCDATABASE_PATH"] = (tmpdir + 'bcdb_specs').to_s
     FileUtils.mkdir_p ENV["BCDATABASE_PATH"]
   end
 
@@ -15,7 +15,7 @@ describe Bcdatabase do
     before(:all) do
       keyfile = tmpdir + 'bcdb-spec-key'
       open(keyfile, 'w') { |f| f.write "01234567890123456789012345678901" }
-      ENV["BCDATABASE_PASS"] = keyfile
+      ENV["BCDATABASE_PASS"] = keyfile.to_s
     end
 
     after(:all) do

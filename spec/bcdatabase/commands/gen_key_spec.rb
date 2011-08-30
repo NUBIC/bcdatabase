@@ -27,7 +27,7 @@ module Bcdatabase::Commands
       let(:keyfile) { keydir + 'key' }
 
       before do
-        ENV['BCDATABASE_PASS'] = keyfile
+        ENV['BCDATABASE_PASS'] = keyfile.to_s
         keydir.mkpath
       end
 

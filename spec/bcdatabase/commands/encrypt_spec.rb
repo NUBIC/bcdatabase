@@ -6,7 +6,7 @@ module Bcdatabase::Commands
 
     before do
       enable_fake_cipherment
-      ENV['BCDATABASE_PATH'] = (tmpdir + 'base').tap { |d| d.mkpath }
+      ENV['BCDATABASE_PATH'] = (tmpdir + 'base').tap { |d| d.mkpath }.to_s
 
       temporary_yaml 'pprod', {
         'wh' => {
