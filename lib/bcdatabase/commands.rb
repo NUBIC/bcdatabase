@@ -72,36 +72,6 @@ module Bcdatabase::Commands
     end
   end
 
-  class Help < Base
-    def initialize(argv)
-      @cmd = argv.shift
-    end
-
-    def self.summary
-      "List commands or display help for one; e.g. #{UTILITY_NAME} help epass"
-    end
-
-    def self.help
-      help_message "help [command name]"
-    end
-
-    def main
-      if @cmd
-        klass = Bcdatabase::Commands[@cmd]
-        if klass
-          msg = klass.respond_to?(:help) ? klass.help : klass.summary
-          $stderr.puts msg
-        else
-          $stderr.puts "Unknown command #{@cmd}"
-          return 1
-        end
-      else
-        $stderr.puts Bcdatabase::Commands.help
-      end
-      0
-    end
-  end
-
   class GenKey < Base
     def initialize(argv)
       @stream = argv[-1] == '-'
@@ -154,39 +124,5 @@ module Bcdatabase::Commands
       until k.size == length; k << rand(126 - 32) + 32; end
       k
     end
-  end
-
-  class << self
-    def help
-      all_help = commands.collect { |c| [c.command_name, c.summary] }.sort_by { |p| p[0] }
-      max_name_length = all_help.collect { |a| a[0].size }.max
-      msg = Base.usage "<command> [args]\n"
-      msg << "Utility for bcdatabase #{Bcdatabase::VERSION}\n"
-      msg << "Commands:\n"
-      msg << all_help.collect { |name, help| " %#{max_name_length + 1}s  %s" % [name, help] }.join("\n")
-    end
-
-    # Lists all the commands
-    def commands
-      constants.reject { |cs| cs == "Base" }.collect { |cs| const_get(cs) }.select { |c| c.kind_of? Class }
-    end
-
-    # Locates the command class for a user-entered command name.
-    # Returns nil if the name is invalid.
-    def command(command_name)
-      begin
-        klassname = command_name.gsub('-', '_').camelize
-        Bcdatabase::Commands.const_get "#{klassname}"
-      rescue NameError
-        nil
-      end
-    end
-    alias :[] :command
-  end
-end
-
-class Class
-  def command_name
-    name.gsub(Bcdatabase::Commands.name + "::", '').underscore.gsub("_", '-')
   end
 end
