@@ -13,7 +13,7 @@ module Bcdatabase::Commands
         key = random_key(128)
         outio.write key
       ensure
-        @outio.close if @outio
+        @outio.close if @close_out && @outio
       end
     end
 
@@ -39,6 +39,7 @@ module Bcdatabase::Commands
           raise ForcedExit.new(1)
         end
       end
+      @close_out = true
       open(filename, 'w')
     end
   end

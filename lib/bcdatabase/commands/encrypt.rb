@@ -8,11 +8,15 @@ module Bcdatabase::Commands
     end
 
     def run
-      # try to preserve the order by replacing everything using regexes
-      contents = inio.read
-      contents.gsub!(/\bpassword:(\s*)(\S+)\s*?$/) { "epassword:#{$1}#{Bcdatabase.encrypt($2)}" }
-      outio.write(contents)
-      outio.close
+      begin
+        # try to preserve the order by replacing everything using regexes
+        contents = inio.read
+        contents.gsub!(/\bpassword:(\s*)(\S+)\s*?$/) { "epassword:#{$1}#{Bcdatabase.encrypt($2)}" }
+        outio.write(contents)
+      ensure
+        @inio.close if @close_in && @inio
+        @outio.close if @close_out && @outio
+      end
     end
 
     private
@@ -20,6 +24,7 @@ module Bcdatabase::Commands
     def inio
       @inio ||=
         if @input
+          @close_in = true
           @input.open('r')
         else
           $stdin
@@ -30,6 +35,7 @@ module Bcdatabase::Commands
       @outio ||=
         if @output
           @output.dirname.mkpath
+          @close_out = true
           @output.open('w')
         else
           $stdout
