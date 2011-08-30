@@ -100,6 +100,9 @@ module Bcdatabase
       },
       :decrypt => lambda { |entry, name, group|
         entry.merge({ 'password' => Bcdatabase.decrypt(entry['epassword']) }) if entry['epassword']
+      },
+      :datamapper => lambda { |entry, name, group|
+        entry.merge('adapter' => entry['datamapper_adapter']) if entry['datamapper_adapter']
       }
     }
 

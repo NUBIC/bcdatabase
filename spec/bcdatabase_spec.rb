@@ -214,6 +214,29 @@ describe Bcdatabase do
         bcdb['scran', 'jim']['foo'].should == ['baz', 'jim', 'scran']
       end
     end
+
+    describe 'for datamapper' do
+      it 'uses the datamapper adapter, if provided' do
+        temporary_yaml 'foo', {
+          'aleph' => {
+            'datamapper_adapter' => 'postgres',
+            'adapter' => 'postgresql'
+          }
+        }
+        bcdb = Bcdatabase.load(:transforms => [:datamapper])
+        bcdb['foo', 'aleph']['adapter'].should == 'postgres'
+      end
+
+      it 'uses the named adapter if no datamapper adapter is provided' do
+        temporary_yaml 'foo', {
+          'aleph' => {
+            'adapter' => 'postgresql'
+          }
+        }
+        bcdb = Bcdatabase.load(:transforms => [:datamapper])
+        bcdb['foo', 'aleph']['adapter'].should == 'postgresql'
+      end
+    end
   end
 
   describe "for database.yml" do

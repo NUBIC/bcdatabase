@@ -6,6 +6,8 @@ Bcdatabase history
 
 - Introduce "transforms" -- a way to attach behavior to modify entries
   on load. See {Bcdatabase.load} for details.
+- Add `:datamapper` built-in transform to support sharing one set of
+  entries between ActiveRecord and DataMapper. (#10)
 
 1.0.6
 -----
