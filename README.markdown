@@ -16,7 +16,7 @@ single administrator.
 
 ## Using bcdatabase to configure the database for a Rails application
 
-A bog-standard rails application's `config/database.yml` file looks like this:
+A bog-standard Rails application's `config/database.yml` file looks like this:
 
     development:
       adapter: oracle_enhanced
@@ -87,7 +87,7 @@ The resulting hash is suitable for passing to
 The database configuration properties for all the applications on a
 server are stored in one or more files under `/etc/nubic/db` (by
 default; see "File locations" below).  Each one is a standard YAML
-file, similar to rails' `database.yml` but with a few enhancements:
+file, similar to Rails' `database.yml` but with a few enhancements:
 
 * Each file can have a defaults entry which provides attributes which
   are shared across all configurations in the file
@@ -129,11 +129,11 @@ and `:stage, :personnel`:
 
 ## Obscuring passwords
 
-bcdatabase supports storing encrypted passwords instead of the
+Bcdatabase supports storing encrypted passwords instead of the
 plaintext ones shown in the previous example.  Encrypted passwords are
 defined with the key `epassword` instead of `password`.  The library
 will decrypt the `epassword` value and expose it to the calling code
-(usually rails) unencrypted under the `password` key.  The
+(usually Rails) unencrypted under the `password` key.  The
 `bcdatabase` command line utility handles encrypting passwords; see
 the next section.
 
@@ -173,7 +173,7 @@ default location, but that location can be overridden by setting
 ## DataMapper
 
 Bcdatabase was originally designed for use with ActiveRecord in Rails
-applications. Since DataMapper's programmatic configuration mechanism
+applications. Since [DataMapper][dm]'s programmatic configuration mechanism
 (`Datamapper.setup`) accepts hashes which are very similar to
 ActiveRecord configuration hashes, Bcdatabase can easily be used with
 DataMapper as well. Example:
@@ -181,13 +181,13 @@ DataMapper as well. Example:
     bcdb = Bcdatabase.load(:transforms => [:datamapper]))
     DataMapper.setup(:default, bcdb[:stage, :personnel])
 
-The `:datamapper` transform passed to `Bcdatabase.load` permits
-sharing of one set of Bcdatabase configurations between ActiveRecord
-and DataMapper-based apps. Specifically, for those cases where the
-ActiveRecord adapter and the DataMapper adapter have different names,
-it allows you to specify a separate `datamapper_adapter` in your
-Bcdatabase configuration. For example, say you had these contents in
-`stage.yml`:
+The `:datamapper` transform passed to `Bcdatabase.load` in this
+example permits sharing of one set of Bcdatabase configurations
+between ActiveRecord and DataMapper-based apps. Specifically, for
+those cases where the ActiveRecord adapter and the DataMapper adapter
+have different names, it allows you to specify a separate
+`datamapper_adapter` in your Bcdatabase configuration. For example,
+say you had these contents in `stage.yml`:
 
     defaults:
       adapter: postgresql
@@ -211,6 +211,8 @@ With the `:datamapper` transform, the result would be instead:
 
 And so your DM and AR apps can live side-by-side and neither needs to
 embed its own database credentials.
+
+[dm]: http://datamapper.org/
 
 ## Platforms
 
