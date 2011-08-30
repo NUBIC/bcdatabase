@@ -26,9 +26,16 @@ module Bcdatabase::Spec
     end
     module_function :clear_tmpdir
 
-    def temporary_yaml(name, hash)
+    def temporary_yaml(name, contents)
       filename = "/#{ENV['BCDATABASE_PATH']}/#{name}.yaml"
-      open(filename, "w") { |f| YAML.dump(hash, f) }
+      open(filename, "w") { |f|
+        case contents
+        when Hash
+          YAML.dump(contents, f)
+        else
+          f.write contents
+        end
+      }
       filename
     end
 

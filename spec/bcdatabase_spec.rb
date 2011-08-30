@@ -224,6 +224,25 @@ describe Bcdatabase do
       bcdb['scran', 'jim']['password'].should == 'earldom'
     end
 
+    describe 'with an empty stanza' do
+      before do
+        temporary_yaml 'scran', "default:\n  host: foo\nempty:\n"
+        @bcdb = Bcdatabase.load
+      end
+
+      it 'uses the default database key' do
+        @bcdb['scran', 'empty']['database'].should == 'empty'
+      end
+
+      it 'uses the default username' do
+        @bcdb['scran', 'empty']['username'].should == 'empty'
+      end
+
+      it 'uses an explicit default' do
+        @bcdb['scran', 'empty']['host'].should == 'foo'
+      end
+    end
+
     describe "with encrypted passwords" do
       before do
         enable_fake_cipherment

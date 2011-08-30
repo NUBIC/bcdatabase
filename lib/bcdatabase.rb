@@ -179,7 +179,10 @@ module Bcdatabase
 
     def create_entry(groupname, dbname)
       group = @map[groupname] or raise Error.new("No database configuration group named #{groupname.inspect} found.  (Found #{@map.keys.inspect}.)")
-      db = group[dbname] or raise Error.new("No database entry for #{dbname.inspect} in #{groupname}")
+      unless group.has_key?(dbname)
+        raise Error.new("No database entry for #{dbname.inspect} in #{groupname}.")
+      end
+      db = group[dbname] || {}
       base = (group['defaults'] || {}).
         merge(group['default'] || {}).
         merge(db)
