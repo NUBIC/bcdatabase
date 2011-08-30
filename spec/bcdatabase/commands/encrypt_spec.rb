@@ -80,6 +80,12 @@ module Bcdatabase::Commands
       let(:output) { subject; File.read(out_path) }
 
       include_examples 'general behavior'
+
+      context 'that are both the same file' do
+        let(:out_path) { pprod_path }
+
+        include_examples 'general behavior'
+      end
     end
   end
 end
