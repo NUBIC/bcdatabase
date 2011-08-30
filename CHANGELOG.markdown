@@ -15,6 +15,7 @@ Bcdatabase history
 - Improve `bcdatabase encrypt` so that it will work with a wider
   variety of input passwords and YAML files. The remaining limitations
   are documented in its online help. (#12)
+- Interpret empty stanzas as entries made up entirely of defaults. (#13)
 
 1.0.6
 -----
