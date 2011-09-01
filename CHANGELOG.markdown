@@ -1,15 +1,16 @@
 Bcdatabase history
 ==================
 
-1.2.0
+1.2.1
 -----
 
+1.2.0
+-----
 - Add automatic transform for `jruby_adapter` when running under
   JRuby. (#14)
 
 1.1.0
 -----
-
 - Introduce "transforms" -- a way to attach behavior to modify entries
   on load. See {Bcdatabase.load} for details.
 - Add `:datamapper` built-in transform to support sharing one set of
