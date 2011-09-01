@@ -6,7 +6,8 @@ gemspec
 if ENV['ACTIVESUPPORT_VERSION']
   version = case ENV['ACTIVESUPPORT_VERSION']
             when /2.3$/ then '~> 2.3.0'
-            when /3.0$/ then '~> 3.0'
+            when /3.0$/ then '~> 3.0.0'
+            when /3.1$/ then '~> 3.1.0'
             else raise "Unsupported ActiveSupport version #{ENV['ACTIVESUPPORT_VERSION']}"
             end
 
