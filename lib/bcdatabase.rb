@@ -120,8 +120,19 @@ module Bcdatabase
       },
       :datamapper => lambda { |entry, name, group|
         entry.merge('adapter' => entry['datamapper_adapter']) if entry['datamapper_adapter']
+      },
+      :jruby => lambda { |entry, name, group|
+        entry.merge('adapter' => entry['jruby_adapter']) if entry['jruby_adapter']
       }
     }
+
+    def self.automatic_transforms
+      @automatic_transforms ||= [
+        :key_defaults,
+        :decrypt,
+        (:jruby if RUBY_PLATFORM =~ /java/)
+      ].compact
+    end
 
     ##
     # Creates a configuration from a set of YAML files.
@@ -129,7 +140,7 @@ module Bcdatabase
     # General use of the library should not use this method, but
     # instead should use {Bcdatabase.load}.
     def initialize(files, transforms=[])
-      @transforms = ([:key_defaults, :decrypt] + transforms).collect do |t|
+      @transforms = (self.class.automatic_transforms + transforms).collect do |t|
         case t
         when Symbol
           BUILT_IN_TRANSFORMS[t] or fail "No built-in transform named #{t.inspect}"

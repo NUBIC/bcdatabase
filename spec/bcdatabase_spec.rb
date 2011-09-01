@@ -318,6 +318,29 @@ describe Bcdatabase do
         bcdb['foo', 'aleph']['adapter'].should == 'postgresql'
       end
     end
+
+    describe 'with a JRuby adapter' do
+      let(:bcdb) { Bcdatabase.load }
+
+      before do
+        temporary_yaml 'foo', {
+          'aleph' => {
+            'jruby_adapter' => 'jdbcpostgresql',
+            'adapter' => 'postgresql'
+          }
+        }
+      end
+
+      if RUBY_PLATFORM =~ /java/
+        it 'uses it in JRuby' do
+          bcdb['foo', 'aleph']['adapter'].should == 'jdbcpostgresql'
+        end
+      else
+        it 'does not use it on other platforms' do
+          bcdb['foo', 'aleph']['adapter'].should == 'postgresql'
+        end
+      end
+    end
   end
 
   describe "for database.yml" do

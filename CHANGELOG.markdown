@@ -1,8 +1,11 @@
 Bcdatabase history
 ==================
 
-1.1.1
+1.2.0
 -----
+
+- Add automatic transform for `jruby_adapter` when running under
+  JRuby. (#14)
 
 1.1.0
 -----

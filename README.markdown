@@ -221,6 +221,13 @@ JRuby (tested on 1.6+), provided that `jruby-openssl` is also
 installed. It is [continuously tested][ci] on all three of these
 platforms.
 
+There is support for having a different adapter defined for
+JRuby. It's very similar to the DataMapper support described above: if
+you define a key called `jruby_adapter` in a configuration, it will be
+copied to `adapter` when Bcdatabase is running under JRuby. Unlike the
+DataMapper support, it is automatic &mdash; no need to specify a
+transform.
+
 [ci]: https://public-ci.nubic.northwestern.edu/job/bcdatabase/
 
 ## Credits
