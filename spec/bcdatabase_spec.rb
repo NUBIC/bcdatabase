@@ -330,25 +330,35 @@ describe Bcdatabase do
       end
     end
 
-    describe 'with a JRuby adapter' do
+    describe 'with JRuby-specific keys' do
       let(:bcdb) { Bcdatabase.load }
 
       before do
         temporary_yaml 'foo', {
           'aleph' => {
             'jruby_adapter' => 'jdbcpostgresql',
-            'adapter' => 'postgresql'
+            'adapter' => 'postgresql',
+            'jruby_preference' => 'flight',
+            'preference' => 'invisibility'
           }
         }
       end
 
       if RUBY_PLATFORM =~ /java/
-        it 'uses it in JRuby' do
+        it 'uses the adapter in JRuby' do
           bcdb['foo', 'aleph']['adapter'].should == 'jdbcpostgresql'
         end
+
+        it 'uses a JRuby-specific arbitrary key in JRuby' do
+          bcdb['foo', 'aleph']['preference'].should == 'flight'
+        end
       else
-        it 'does not use it on other platforms' do
+        it 'does not use the adapter on other platforms' do
           bcdb['foo', 'aleph']['adapter'].should == 'postgresql'
+        end
+
+        it 'uses the default arbitrary key on other platforms' do
+          bcdb['foo', 'aleph']['preference'].should == 'invisibility'
         end
       end
     end

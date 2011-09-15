@@ -111,6 +111,20 @@ module Bcdatabase
   ##
   # The set of groups and entries returned by one call to {Bcdatabase.load}.
   class DatabaseConfigurations
+    ##
+    # @return [#call] a transform that copies a prefixed key's value
+    #   to the name without the prefix. E.g., the built-in
+    #   `:datamapper` transform is `prefix_remove_copy_transform('datamapper_')`.
+    def self.prefix_remove_copy_transform(prefix)
+      lambda { |entry, name, group|
+        entry.merge(
+          entry.keys.select { |k| k =~ /^#{prefix}/ }.inject({}) { |additions, k|
+            additions[k.sub(/^#{prefix}/, '')] = entry[k]; additions
+          }
+        )
+      }
+    end
+
     BUILT_IN_TRANSFORMS = {
       :key_defaults => lambda { |entry, name, group|
         { 'username' => name, 'database' => name }.merge(entry)
@@ -118,16 +132,8 @@ module Bcdatabase
       :decrypt => lambda { |entry, name, group|
         entry.merge({ 'password' => Bcdatabase.decrypt(entry['epassword']) }) if entry['epassword']
       },
-      :datamapper => lambda { |entry, name, group|
-        entry.merge(
-          entry.keys.select { |k| k =~ /^datamapper_/ }.inject({}) { |additions, k|
-            additions[k.sub(/^datamapper_/, '')] = entry[k]; additions
-          }
-        )
-      },
-      :jruby => lambda { |entry, name, group|
-        entry.merge('adapter' => entry['jruby_adapter']) if entry['jruby_adapter']
-      }
+      :datamapper => prefix_remove_copy_transform('datamapper_'),
+      :jruby => prefix_remove_copy_transform('jruby_')
     }
 
     def self.automatic_transforms

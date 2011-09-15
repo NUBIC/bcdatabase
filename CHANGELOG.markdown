@@ -3,6 +3,8 @@ Bcdatabase history
 
 1.2.1
 -----
+- Generalize `datamapper_adapter` and `jruby_adapter` transforms to
+  work with any similarly prefixed keys. (#15)
 
 1.2.0
 -----
