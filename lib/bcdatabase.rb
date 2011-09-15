@@ -119,7 +119,11 @@ module Bcdatabase
         entry.merge({ 'password' => Bcdatabase.decrypt(entry['epassword']) }) if entry['epassword']
       },
       :datamapper => lambda { |entry, name, group|
-        entry.merge('adapter' => entry['datamapper_adapter']) if entry['datamapper_adapter']
+        entry.merge(
+          entry.keys.select { |k| k =~ /^datamapper_/ }.inject({}) { |additions, k|
+            additions[k.sub(/^datamapper_/, '')] = entry[k]; additions
+          }
+        )
       },
       :jruby => lambda { |entry, name, group|
         entry.merge('adapter' => entry['jruby_adapter']) if entry['jruby_adapter']

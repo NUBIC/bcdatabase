@@ -317,6 +317,17 @@ describe Bcdatabase do
         bcdb = Bcdatabase.load(:transforms => [:datamapper])
         bcdb['foo', 'aleph']['adapter'].should == 'postgresql'
       end
+
+      it 'copies an arbitrary, datamapper-prefixed key to the no-prefix equivalent' do
+        temporary_yaml 'foo',  {
+          'aleph' => {
+            'datamapper_preference' => 'flight',
+            'preference' => 'invisibility'
+          }
+        }
+        bcdb = Bcdatabase.load(:transforms => [:datamapper])
+        bcdb['foo', 'aleph']['preference'].should == 'flight'
+      end
     end
 
     describe 'with a JRuby adapter' do
