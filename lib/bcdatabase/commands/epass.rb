@@ -24,7 +24,9 @@ module Bcdatabase::Commands
 
     def interactive
       loop do
-        pass = @hl.ask("Password (^C to end): ") do |q|
+        # The proc ensures that HighLine doesn't coerce the answer to
+        # a HighLine::String.
+        pass = @hl.ask("Password (^C to end): ", proc { |a| a }) do |q|
           # this is configurable because having it false hangs the
           # unit tests.
           q.echo = @echo
