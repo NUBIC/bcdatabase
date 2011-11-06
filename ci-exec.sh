@@ -1,6 +1,6 @@
 #!/bin/bash -xe
 
-BUNDLER_VERSION=1.0.18
+BUNDLER_VERSION=1.1.rc
 GEMSET="bcdatabase"
 
 if [ -n "${ACTIVESUPPORT_VERSION}" ]; then
