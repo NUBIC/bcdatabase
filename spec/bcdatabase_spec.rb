@@ -15,7 +15,7 @@ describe Bcdatabase do
     let(:keyfile) { tmpdir + 'bcdb-spec-key' }
 
     before do
-      open(keyfile, 'w') { |f| f.write "01234567890123456789012345678901" }
+      File.open(keyfile, 'w') { |f| f.write "01234567890123456789012345678901" }
       ENV["BCDATABASE_PASS"] = keyfile.to_s
     end
 
