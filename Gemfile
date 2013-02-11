@@ -17,7 +17,7 @@ end
 group :development do
   # For yard's markdown support
   platforms :jruby do; gem 'maruku'; end
-  platforms :ruby_18, :ruby_19 do; gem 'rdiscount'; end
+  platforms :ruby_18, :ruby_19 do; gem 'rdiscount', '~> 1.0'; end
 end
 
 # This is specified here rather than in the gemspec so as not to have
