@@ -31,7 +31,7 @@ module Bcdatabase::Commands
           # unit tests.
           q.echo = @echo
         end
-        puts "  epassword: #{Bcdatabase.encrypt(pass)}"
+        p "  epassword: #{Bcdatabase.encrypt(pass)}"
       end
     rescue Interrupt
       $stderr.puts "Quit"
