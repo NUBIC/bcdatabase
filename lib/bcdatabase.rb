@@ -51,7 +51,7 @@ module Bcdatabase
     ##
     # @private exposed for collaboration
     def encrypt(s)
-      Base64.encode64(encipher(:encrypt, s)).strip
+      Base64.strict_encode64(encipher(:encrypt, s)).strip
     end
 
     ##

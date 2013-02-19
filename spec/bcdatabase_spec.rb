@@ -23,6 +23,10 @@ describe Bcdatabase do
       ENV["BCDATABASE_PASS"] = nil
     end
 
+    it "should not have newlines in long encrypted passwords" do
+      Bcdatabase.encrypt("CKvWShwhUAIXAbBBKHfRDZzaXV1oOIzTfnZ8NGuCB7f9vGO0bFVUIgEtJbm5").match('\n').should be_nil
+    end
+
     it "should be reversible" do
       e = Bcdatabase.encrypt("riboflavin")
       Bcdatabase.decrypt(e).should == "riboflavin"
