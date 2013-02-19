@@ -1,6 +1,9 @@
 Bcdatabase history
 ==================
 
+1.2.3
+-----
+
 1.2.2
 -----
 - Ensure that long passwords can be properly encrypted. (#19, @gibsop1)
