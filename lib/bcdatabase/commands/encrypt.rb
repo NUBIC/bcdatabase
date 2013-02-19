@@ -12,7 +12,7 @@ module Bcdatabase::Commands
         # try to preserve the order by replacing everything using regexes
         contents = inio.read
         contents.gsub!(/\bpassword:.*?$/) { |line|
-          "epassword: #{Bcdatabase.encrypt(YAML.load(line)['password']).inspect}"
+          "epassword: #{Bcdatabase.encrypt(YAML.load(line)['password'])}"
         }
         outio.write(contents)
       ensure
