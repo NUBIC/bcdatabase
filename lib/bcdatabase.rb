@@ -51,7 +51,12 @@ module Bcdatabase
     ##
     # @private exposed for collaboration
     def encrypt(s)
-      Base64.strict_encode64(encipher(:encrypt, s)).strip
+      bits = encipher(:encrypt, s)
+      if Base64.respond_to?(:strict_encode64)
+        Base64.strict_encode64(bits).strip
+      else
+        Base64.encode64(bits).gsub("\n", '').strip
+      end
     end
 
     ##
