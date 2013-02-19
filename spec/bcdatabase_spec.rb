@@ -28,6 +28,10 @@ describe Bcdatabase do
       Bcdatabase.decrypt(e).should == "riboflavin"
     end
 
+    it "should not have newlines in long encrypted passwords" do
+      Bcdatabase.encrypt("CKvWShwhUAIXAbBBKHfRDZzaXV1oOIzTfnZ8NGuCB7f9vGO0bFVUIgEtJbm5").match('\n').should be_nil
+    end
+
     it "should permute the input" do
       Bcdatabase.encrypt("zanzibar").should_not == "zanzibar"
     end
