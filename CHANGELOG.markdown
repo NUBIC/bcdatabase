@@ -3,6 +3,7 @@ Bcdatabase history
 
 1.2.2
 -----
+- Ensure that long passwords can be properly encrypted. (#19, @gibsop1)
 - Ensure compatibility with HighLine 1.6.5. (#16)
 
 1.2.1
