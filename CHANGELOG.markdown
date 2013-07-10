@@ -1,6 +1,9 @@
 Bcdatabase history
 ==================
 
+1.2.4
+-----
+
 1.2.3
 -----
 - Loosen thor dependency. (#20, @asmega)
