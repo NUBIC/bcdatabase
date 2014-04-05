@@ -3,6 +3,7 @@ Bcdatabase history
 
 1.2.4
 -----
+- Remove activesupport dependency. (#21)
 
 1.2.3
 -----

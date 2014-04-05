@@ -3,9 +3,7 @@ require 'openssl'
 require 'digest/sha2'
 require 'base64'
 require 'pathname'
-
-# Requiring just extract_options doesn't work on AS 2.3.
-require 'active_support/core_ext/array'
+require 'bcdatabase/core_ext/array/extract_options'
 
 module Bcdatabase
   autoload :VERSION,  'bcdatabase/version'
