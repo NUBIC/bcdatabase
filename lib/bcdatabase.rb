@@ -4,9 +4,6 @@ require 'digest/sha2'
 require 'base64'
 require 'pathname'
 
-# Requiring just extract_options doesn't work on AS 2.3.
-require 'active_support/core_ext/array'
-
 module Bcdatabase
   autoload :VERSION,  'bcdatabase/version'
   autoload :CLI,      'bcdatabase/cli'
@@ -42,7 +39,7 @@ module Bcdatabase
     #   @return [DatabaseConfigurations] a new instance reflecting
     #     the selected path.
     def load(*args)
-      options = args.extract_options!
+      options = extract_options(args)
       path ||= (args.first || base_path)
       files = Dir.glob(File.join(path, "*.yml")) + Dir.glob(File.join(path, "*.yaml"))
       DatabaseConfigurations.new(files, options[:transforms] || [])
@@ -70,6 +67,14 @@ module Bcdatabase
     end
 
     private
+
+    def extract_options(args)
+      if args.last.is_a?(Hash)
+        args.pop
+      else
+        {}
+      end
+    end
 
     # based on http://snippets.dzone.com/posts/show/576
     def encipher(direction, s)
