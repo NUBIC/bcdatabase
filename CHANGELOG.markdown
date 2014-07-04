@@ -3,8 +3,11 @@ Bcdatabase history
 
 1.2.6
 -----
+- Re-restrict highline dependency. Even though the identified issue was fixed,
+  several tests still fail with the latest highline (1.6.21) that do not fail
+  with highline 1.6.8.
 
-1.2.5
+1.2.5 (yanked)
 -----
 - Loosen highline dependency, as the [issue](https://github.com/NUBIC/bcdatabase/issues/17)
   has been [resolved](https://github.com/JEG2/highline/pull/67). (#23)
