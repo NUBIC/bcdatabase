@@ -1,6 +1,9 @@
 Bcdatabase history
 ==================
 
+1.2.6
+-----
+
 1.2.5
 -----
 - Loosen highline dependency, as the [issue](https://github.com/NUBIC/bcdatabase/issues/17)
