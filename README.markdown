@@ -216,10 +216,9 @@ embed its own database credentials.
 
 ## Platforms
 
-Bcdatabase works on MRI 1.8.7 and MRI 1.9.2. It will also work on
-JRuby (tested on 1.6+), provided that `jruby-openssl` is also
-installed. It is [continuously tested][ci] on all three of these
-platforms.
+Bcdatabase works on MRI 1.8.7, 1.9.3, 2.0.0, and 2.1.2. It will also work on
+JRuby (tested on 1.7), provided that `jruby-openssl` is also installed. It is
+[continuously tested][ci] on all three of these platforms.
 
 There is support for having a different adapter defined for
 JRuby. It's very similar to the DataMapper support described above: if
@@ -228,7 +227,7 @@ copied to `adapter` when Bcdatabase is running under JRuby. Unlike the
 DataMapper support, it is automatic &mdash; no need to specify a
 transform.
 
-[ci]: https://public-ci.nubic.northwestern.edu/job/bcdatabase/
+[ci]: https://travis-ci.org/NUBIC/bcdatabase
 
 ## Credits
 
