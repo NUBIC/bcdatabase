@@ -2,19 +2,6 @@ source "http://rubygems.org"
 
 gemspec
 
-# for testing against different major releases of ActiveSupport
-if ENV['ACTIVESUPPORT_VERSION']
-  version = case ENV['ACTIVESUPPORT_VERSION']
-            when /2.3$/ then '~> 2.3.0'
-            when /3.0$/ then '~> 3.0.0'
-            when /3.1$/ then '~> 3.1.0'
-            when /3.2$/ then '~> 3.2.0'
-            else raise "Unsupported ActiveSupport version #{ENV['ACTIVESUPPORT_VERSION']}"
-            end
-
-  gem 'activesupport', version
-end
-
 group :development do
   # For yard's markdown support
   platforms :jruby do; gem 'maruku'; end
