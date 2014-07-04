@@ -3,7 +3,8 @@ Bcdatabase history
 
 1.2.5
 -----
-- Loosen highline dependency, as the [issue](https://github.com/NUBIC/bcdatabase/issues/17) has been [resolved](https://github.com/JEG2/highline/pull/67). (#23)
+- Loosen highline dependency, as the [issue](https://github.com/NUBIC/bcdatabase/issues/17)
+  has been [resolved](https://github.com/JEG2/highline/pull/67). (#23)
 
 1.2.4
 -----
