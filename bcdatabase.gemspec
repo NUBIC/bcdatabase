@@ -18,7 +18,7 @@ Gem::Specification.new do |s|
   s.files = Dir.glob("{CHANGELOG.markdown,LICENSE,README.markdown,bcdatabase.gemspec,{bin,lib}/**/*}")
 
   s.add_dependency "highline", "~> 1.5", '< 1.6.9'
-  s.add_dependency 'thor', '~> 0.14'
+  s.add_dependency 'thor', '~> 0.18'
 
   s.add_development_dependency 'bundler', '~> 1.0', '>= 1.0.15'
   s.add_development_dependency 'rake', '~> 0.9.2'
